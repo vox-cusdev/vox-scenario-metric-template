@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020"],
+    "typeRoots": ["typings/voxengine.d.ts"],
+    "noEmit": true
+  }
+}
