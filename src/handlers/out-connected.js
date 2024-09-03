@@ -1,15 +1,20 @@
 import {store} from '../globals/store';
 import {metric, statuses} from '../globals/metric';
 
-export const outConnected = async () => {
+export const outConnected = async ({sipCallId}) => {
   Logger.write('[LOGGER] Попали в connected исходящего плеча (исходящий звонок)');
+  
+  // Записали идентификатор звонка входящего плеча
+  store.callOutData.call_id = sipCallId;
+  // Ответили ли на входящий звонок
+  store.callOutData.successful = true;
   
   // Вписываем код 200 - т.к. успешно соединились с исходящим плечом
   metric.call_status_code = 200;
   // Проставляем статус успешного коннекта
   metric.call_status = statuses.call_status.connected;
   // Записываем время за которое дозвонились до исходящего плеча
-  metric.duration_dialing_time = store.duration.dialing.endTime().duration();
+  metric.duration_dialing = store.duration.dialing.endTime().duration();
   
   // Запускаем запись звонка и вешаем события по которому получим ссылку на запись звонка
   store.callOut.addEventListener(CallEvents.RecordStarted, ({url}) => metric.record_url = url);
